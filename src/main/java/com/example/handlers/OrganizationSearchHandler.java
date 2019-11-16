@@ -1,14 +1,24 @@
 package com.example.handlers;
 
+import com.example.models.BaseModel;
 import com.example.models.Organization;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class OrganizationSearchHandler {
+import static com.example.handlers.SearchHandler.SearchField.CREATED_AT;
+import static com.example.handlers.SearchHandler.SearchField.DETAILS;
+import static com.example.handlers.SearchHandler.SearchField.DOMAIN_NAMES;
+import static com.example.handlers.SearchHandler.SearchField.EXTERNAL_ID;
+import static com.example.handlers.SearchHandler.SearchField.ID;
+import static com.example.handlers.SearchHandler.SearchField.NAME;
+import static com.example.handlers.SearchHandler.SearchField.SHARED_TICKETS;
+import static com.example.handlers.SearchHandler.SearchField.TAGS;
+import static com.example.handlers.SearchHandler.SearchField.URL;
+
+public class OrganizationSearchHandler extends SearchHandler {
 
     private final List<Organization> organizations;
 
@@ -16,45 +26,39 @@ public class OrganizationSearchHandler {
         this.organizations = organizations;
     }
 
-    public List<Organization> search(String searchKey, SearchField searchBy) {
-        List<Organization> results = new ArrayList<>();
-
-        switch (searchBy) {
-            case ID:
-                results = organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(String.valueOf(org.getId()), searchKey)).collect(Collectors.toList());
-                break;
-            case SHARED_TICKETS:
-                results = organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(String.valueOf(org.isSharedTickets()), searchKey)).collect(Collectors.toList());
-                break;
-            case EXTERNAL_ID:
-                results = organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(org.getExternalId(), searchKey)).collect(Collectors.toList());
-                break;
-            case URL:
-                results = organizations.stream().filter(org -> StringUtils.containsIgnoreCase(org.getUrl(), searchKey)).collect(Collectors.toList());
-                break;
-            case NAME:
-                results = organizations.stream().filter(org -> StringUtils.containsIgnoreCase(org.getName(), searchKey)).collect(Collectors.toList());
-                break;
-            case CREATED_AT:
-                results = organizations.stream().filter(org -> StringUtils.containsIgnoreCase(org.getCreatedAt(), searchKey)).collect(Collectors.toList());
-                break;
-            case DETAILS:
-                results = organizations.stream().filter(org -> StringUtils.containsIgnoreCase(org.getDetails(), searchKey)).collect(Collectors.toList());
-                break;
-            case DOMAIN_NAMES:
-                results = organizations.stream().filter(o -> CollectionUtils.isEmpty(o.getDomainNames().stream().filter(domain -> StringUtils.containsIgnoreCase(domain, searchKey)).collect(Collectors.toList()))).collect(Collectors.toList());
-                break;
-            case TAGS:
-                results = organizations.stream().filter(o -> CollectionUtils.isEmpty(o.getTags().stream().filter(tag -> StringUtils.containsIgnoreCase(tag, searchKey)).collect(Collectors.toList()))).collect(Collectors.toList());
-                break;
-            default:
-                throw new UnsupportedOperationException("Invalid search field supplied");
+    @Override
+    public List<BaseModel> search(int searchType, String searchKey, int searchField) {
+        if (searchType == 1) {
+            switch (getSearchField(searchField)) {
+                case ID:
+                    return organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(org.getId(), searchKey)).collect(Collectors.toList());
+                case SHARED_TICKETS:
+                    return organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(String.valueOf(org.isSharedTickets()), searchKey)).collect(Collectors.toList());
+                case EXTERNAL_ID:
+                    return organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(org.getExternalId(), searchKey)).collect(Collectors.toList());
+                case URL:
+                    return organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(org.getUrl(), searchKey)).collect(Collectors.toList());
+                case NAME:
+                    return organizations.stream().filter(org -> StringUtils.containsIgnoreCase(org.getName(), searchKey)).collect(Collectors.toList());
+                case CREATED_AT:
+                    return organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(org.getCreatedAt(), searchKey)).collect(Collectors.toList());
+                case DETAILS:
+                    return organizations.stream().filter(org -> StringUtils.containsIgnoreCase(org.getDetails(), searchKey)).collect(Collectors.toList());
+                case DOMAIN_NAMES:
+                    return organizations.stream().filter(org -> CollectionUtils.isEmpty(org.getDomainNames().stream().filter(domain -> StringUtils.containsIgnoreCase(domain, searchKey)).collect(Collectors.toList()))).collect(Collectors.toList());
+                case TAGS:
+                    return organizations.stream().filter(org -> CollectionUtils.isEmpty(org.getTags().stream().filter(tag -> StringUtils.containsIgnoreCase(tag, searchKey)).collect(Collectors.toList()))).collect(Collectors.toList());
+                default:
+                    throw new UnsupportedOperationException("Invalid search field supplied");
+            }
+        } else {
+            return this.getNextHandler().search(searchType, searchKey, searchField);
         }
-
-        return results;
     }
 
-    public static enum SearchField {
-        ID, URL, EXTERNAL_ID, NAME, DOMAIN_NAMES, CREATED_AT, DETAILS, SHARED_TICKETS, TAGS;
+    @Override
+    public SearchField getSearchField(int searchField) {
+        SearchField[] searchFields = new SearchField[]{ID, EXTERNAL_ID, CREATED_AT, URL, TAGS, DOMAIN_NAMES, SHARED_TICKETS, NAME, DETAILS};
+        return searchFields[searchField - 1];
     }
 }

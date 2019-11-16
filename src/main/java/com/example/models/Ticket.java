@@ -3,22 +3,16 @@ package com.example.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Getter
 @Setter
-public class Ticket implements Serializable {
-
-    @JsonProperty("_id")
-    private String id;
+public class Ticket extends BaseModel {
 
     @JsonProperty("has_incidents")
     private boolean hasIncidents;
-
-    @JsonProperty("external_id")
-    private String externalId;
 
     @JsonProperty("submitter_id")
     private String submitterId;
@@ -29,19 +23,41 @@ public class Ticket implements Serializable {
     @JsonProperty("organization_id")
     private String organizationId;
 
-    @JsonProperty("created_at")
-    private String createdAt;
-
     @JsonProperty("due_at")
     private String dueAt;
 
-    private String url;
     private String type;
     private String subject;
     private String description;
     private String priority;
     private String status;
     private String via;
-    private List<String> tags;
+
+    public String getSubmitterName(List<User> allUsers) {
+        return allUsers
+                .stream()
+                .filter(user -> StringUtils.equals(user.getId(), this.submitterId))
+                .findFirst()
+                .map(User::getName)
+                .orElse(null);
+    }
+
+    public String getAssigneeName(List<User> allUsers) {
+        return allUsers
+                .stream()
+                .filter(user -> StringUtils.equals(user.getId(), this.assigneeId))
+                .findFirst()
+                .map(User::getName)
+                .orElse(null);
+    }
+
+    public String getOrganizationName(List<Organization> allOrganizations) {
+        return allOrganizations
+                .stream()
+                .filter(organization -> StringUtils.equals(organization.getId(), this.organizationId))
+                .findFirst()
+                .map(Organization::getName)
+                .orElse(null);
+    }
 
 }

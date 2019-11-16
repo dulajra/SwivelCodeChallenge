@@ -1,0 +1,85 @@
+package com.example.handlers;
+
+import com.example.models.BaseModel;
+import com.example.models.Ticket;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.example.handlers.SearchHandler.SearchField.ASSIGNEE_ID;
+import static com.example.handlers.SearchHandler.SearchField.CREATED_AT;
+import static com.example.handlers.SearchHandler.SearchField.DESCRIPTION;
+import static com.example.handlers.SearchHandler.SearchField.DUE_AT;
+import static com.example.handlers.SearchHandler.SearchField.EXTERNAL_ID;
+import static com.example.handlers.SearchHandler.SearchField.HAS_INCIDENTS;
+import static com.example.handlers.SearchHandler.SearchField.ID;
+import static com.example.handlers.SearchHandler.SearchField.ORGANIZATION_ID;
+import static com.example.handlers.SearchHandler.SearchField.PRIORITY;
+import static com.example.handlers.SearchHandler.SearchField.STATUS;
+import static com.example.handlers.SearchHandler.SearchField.SUBJECT;
+import static com.example.handlers.SearchHandler.SearchField.SUBMITTER_ID;
+import static com.example.handlers.SearchHandler.SearchField.TAGS;
+import static com.example.handlers.SearchHandler.SearchField.TYPE;
+import static com.example.handlers.SearchHandler.SearchField.URL;
+import static com.example.handlers.SearchHandler.SearchField.VIA;
+
+public class TicketSearchHandler extends SearchHandler {
+
+    private final List<Ticket> tickets;
+
+    public TicketSearchHandler(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
+    @Override
+    public List<BaseModel> search(int searchType, String searchKey, int searchField) {
+        if (searchType == 3) {
+            switch (getSearchField(searchField)) {
+                case ID:
+                    return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(ticket.getId(), searchKey)).collect(Collectors.toList());
+                case HAS_INCIDENTS:
+                    return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(String.valueOf(ticket.isHasIncidents()), searchKey)).collect(Collectors.toList());
+                case EXTERNAL_ID:
+                    return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(ticket.getExternalId(), searchKey)).collect(Collectors.toList());
+                case SUBMITTER_ID:
+                    return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(ticket.getSubmitterId(), searchKey)).collect(Collectors.toList());
+                case ASSIGNEE_ID:
+                    return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(ticket.getAssigneeId(), searchKey)).collect(Collectors.toList());
+                case ORGANIZATION_ID:
+                    return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(ticket.getOrganizationId(), searchKey)).collect(Collectors.toList());
+                case DUE_AT:
+                    return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(ticket.getDueAt(), searchKey)).collect(Collectors.toList());
+                case TYPE:
+                    return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(ticket.getType(), searchKey)).collect(Collectors.toList());
+                case PRIORITY:
+                    return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(ticket.getPriority(), searchKey)).collect(Collectors.toList());
+                case STATUS:
+                    return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(ticket.getStatus(), searchKey)).collect(Collectors.toList());
+                case VIA:
+                    return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(ticket.getVia(), searchKey)).collect(Collectors.toList());
+                case SUBJECT:
+                    return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(ticket.getSubject(), searchKey)).collect(Collectors.toList());
+                case URL:
+                    return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(ticket.getUrl(), searchKey)).collect(Collectors.toList());
+                case CREATED_AT:
+                    return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(ticket.getCreatedAt(), searchKey)).collect(Collectors.toList());
+                case DESCRIPTION:
+                    return tickets.stream().filter(ticket -> StringUtils.containsIgnoreCase(ticket.getDescription(), searchKey)).collect(Collectors.toList());
+                case TAGS:
+                    return tickets.stream().filter(ticket -> CollectionUtils.isEmpty(ticket.getTags().stream().filter(tag -> StringUtils.containsIgnoreCase(tag, searchKey)).collect(Collectors.toList()))).collect(Collectors.toList());
+                default:
+                    throw new UnsupportedOperationException("Invalid search field supplied");
+            }
+        } else {
+            return this.getNextHandler().search(searchType, searchKey, searchField);
+        }
+    }
+
+    @Override
+    public SearchField getSearchField(int searchField) {
+        SearchField[] searchFields = new SearchField[]{ID, EXTERNAL_ID, CREATED_AT, URL, TAGS, HAS_INCIDENTS, SUBMITTER_ID, ASSIGNEE_ID, ORGANIZATION_ID, DUE_AT, TYPE, SUBJECT, DESCRIPTION, PRIORITY, STATUS, VIA};
+        return searchFields[searchField - 1];
+    }
+}

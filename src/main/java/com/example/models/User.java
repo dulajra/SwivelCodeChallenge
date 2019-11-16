@@ -3,25 +3,17 @@ package com.example.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
-import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class User implements Serializable {
-
-    @JsonProperty("_id")
-    private int id;
-
-    @JsonProperty("external_id")
-    private String externalId;
+public class User extends BaseModel {
 
     @JsonProperty("organization_id")
     private String organizationId;
-
-    @JsonProperty("created_at")
-    private String createdAt;
 
     @JsonProperty("last_login_at")
     private String lastLoginAt;
@@ -30,7 +22,6 @@ public class User implements Serializable {
     private boolean verified;
     private boolean shared;
     private boolean suspended;
-    private String url;
     private String name;
     private String alias;
     private String locale;
@@ -39,5 +30,27 @@ public class User implements Serializable {
     private String phone;
     private String signature;
     private String role;
-    private List<String> tags;
+
+    public String getOrganizationName(List<Organization> allOrganizations) {
+        return allOrganizations
+                .stream()
+                .filter(organization -> StringUtils.equals(organization.getId(), this.organizationId))
+                .findFirst()
+                .map(Organization::getName)
+                .orElse(null);
+    }
+
+    public List<Ticket> getTicketsAssignedToMe(List<Ticket> allTickets) {
+        return allTickets
+                .stream()
+                .filter(ticket -> StringUtils.equals(ticket.getAssigneeId(), this.getId()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Ticket> getTicketsSubmittedByMe(List<Ticket> allTickets) {
+        return allTickets
+                .stream()
+                .filter(ticket -> StringUtils.equals(ticket.getSubmitterId(), this.getId()))
+                .collect(Collectors.toList());
+    }
 }
