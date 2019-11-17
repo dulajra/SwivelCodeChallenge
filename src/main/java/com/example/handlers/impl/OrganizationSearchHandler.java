@@ -53,9 +53,9 @@ public class OrganizationSearchHandler extends SearchHandler {
                 case DETAILS:
                     return organizations.stream().filter(org -> StringUtils.containsIgnoreCase(org.getDetails(), searchTO.getSearchKey())).collect(Collectors.toList());
                 case DOMAIN_NAMES:
-                    return organizations.stream().filter(org -> CollectionUtils.isEmpty(org.getDomainNames().stream().filter(domain -> StringUtils.containsIgnoreCase(domain, searchTO.getSearchKey())).collect(Collectors.toList()))).collect(Collectors.toList());
+                    return organizations.stream().filter(org -> CollectionUtils.isNotEmpty(org.getDomainNames().stream().filter(domain -> StringUtils.containsIgnoreCase(domain, searchTO.getSearchKey())).collect(Collectors.toList()))).collect(Collectors.toList());
                 case TAGS:
-                    return organizations.stream().filter(org -> CollectionUtils.isEmpty(org.getTags().stream().filter(tag -> StringUtils.containsIgnoreCase(tag, searchTO.getSearchKey())).collect(Collectors.toList()))).collect(Collectors.toList());
+                    return organizations.stream().filter(org -> CollectionUtils.isNotEmpty(org.getTags().stream().filter(tag -> StringUtils.containsIgnoreCase(tag, searchTO.getSearchKey())).collect(Collectors.toList()))).collect(Collectors.toList());
                 default:
                     throw new UnsupportedOperationException("Invalid search field supplied");
             }
