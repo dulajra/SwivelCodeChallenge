@@ -1,6 +1,7 @@
 package com.example.handlers;
 
 import com.example.models.BaseModel;
+import com.example.models.SearchTO;
 import lombok.Getter;
 
 import java.util.List;
@@ -9,7 +10,7 @@ abstract public class SearchHandler {
     @Getter
     private SearchHandler nextHandler;
 
-    abstract public List<BaseModel> search(int searchType, String searchKey, int searchBy);
+    abstract public List<BaseModel> search(SearchTO searchTO);
 
     abstract public SearchField getSearchField(int searchField);
 

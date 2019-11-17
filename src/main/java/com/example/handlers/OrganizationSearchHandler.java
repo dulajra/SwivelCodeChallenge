@@ -2,6 +2,7 @@ package com.example.handlers;
 
 import com.example.models.BaseModel;
 import com.example.models.Organization;
+import com.example.models.SearchTO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,32 +28,32 @@ public class OrganizationSearchHandler extends SearchHandler {
     }
 
     @Override
-    public List<BaseModel> search(int searchType, String searchKey, int searchField) {
-        if (searchType == 1) {
-            switch (getSearchField(searchField)) {
+    public List<BaseModel> search(SearchTO searchTO) {
+        if (searchTO.getSearchType() == 1) {
+            switch (getSearchField(searchTO.getSearchField())) {
                 case ID:
-                    return organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(org.getId(), searchKey)).collect(Collectors.toList());
+                    return organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(org.getId(), searchTO.getSearchKey())).collect(Collectors.toList());
                 case SHARED_TICKETS:
-                    return organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(String.valueOf(org.isSharedTickets()), searchKey)).collect(Collectors.toList());
+                    return organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(String.valueOf(org.isSharedTickets()), searchTO.getSearchKey())).collect(Collectors.toList());
                 case EXTERNAL_ID:
-                    return organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(org.getExternalId(), searchKey)).collect(Collectors.toList());
+                    return organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(org.getExternalId(), searchTO.getSearchKey())).collect(Collectors.toList());
                 case URL:
-                    return organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(org.getUrl(), searchKey)).collect(Collectors.toList());
+                    return organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(org.getUrl(), searchTO.getSearchKey())).collect(Collectors.toList());
                 case NAME:
-                    return organizations.stream().filter(org -> StringUtils.containsIgnoreCase(org.getName(), searchKey)).collect(Collectors.toList());
+                    return organizations.stream().filter(org -> StringUtils.containsIgnoreCase(org.getName(), searchTO.getSearchKey())).collect(Collectors.toList());
                 case CREATED_AT:
-                    return organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(org.getCreatedAt(), searchKey)).collect(Collectors.toList());
+                    return organizations.stream().filter(org -> StringUtils.equalsIgnoreCase(org.getCreatedAt(), searchTO.getSearchKey())).collect(Collectors.toList());
                 case DETAILS:
-                    return organizations.stream().filter(org -> StringUtils.containsIgnoreCase(org.getDetails(), searchKey)).collect(Collectors.toList());
+                    return organizations.stream().filter(org -> StringUtils.containsIgnoreCase(org.getDetails(), searchTO.getSearchKey())).collect(Collectors.toList());
                 case DOMAIN_NAMES:
-                    return organizations.stream().filter(org -> CollectionUtils.isEmpty(org.getDomainNames().stream().filter(domain -> StringUtils.containsIgnoreCase(domain, searchKey)).collect(Collectors.toList()))).collect(Collectors.toList());
+                    return organizations.stream().filter(org -> CollectionUtils.isEmpty(org.getDomainNames().stream().filter(domain -> StringUtils.containsIgnoreCase(domain, searchTO.getSearchKey())).collect(Collectors.toList()))).collect(Collectors.toList());
                 case TAGS:
-                    return organizations.stream().filter(org -> CollectionUtils.isEmpty(org.getTags().stream().filter(tag -> StringUtils.containsIgnoreCase(tag, searchKey)).collect(Collectors.toList()))).collect(Collectors.toList());
+                    return organizations.stream().filter(org -> CollectionUtils.isEmpty(org.getTags().stream().filter(tag -> StringUtils.containsIgnoreCase(tag, searchTO.getSearchKey())).collect(Collectors.toList()))).collect(Collectors.toList());
                 default:
                     throw new UnsupportedOperationException("Invalid search field supplied");
             }
         } else {
-            return this.getNextHandler().search(searchType, searchKey, searchField);
+            return this.getNextHandler().search(searchTO);
         }
     }
 
