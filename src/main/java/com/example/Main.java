@@ -31,24 +31,16 @@ public class Main {
 
         osh.setNextHandler(ush);
         ush.setNextHandler(tsh);
-        tsh.setNextHandler(osh);
 
-        switch (InputUtils.welcomeUser()) {
-            case 1:
-                // Start searching
-                while (true) {
-                    SearchTO searchTO = InputUtils.startSearch();
+        SearchTO searchTO;
 
-                    if (searchTO != null) {
-                        List<BaseModel> search = osh.search(searchTO);
-                        PrintUtils.printOrganizations(search, organizations, users, tickets);
-                    }
-                }
-            case 2:
-                // Display help menu
-                break;
-            case 3:
-                System.exit(0);
+        while ((searchTO = InputUtils.startSearch()) != null) {
+            try {
+                List<BaseModel> search = osh.search(searchTO);
+                PrintUtils.printOrganizations(search, organizations, users, tickets);
+            } catch (UnsupportedOperationException ex) {
+                System.err.println("Oops! Something went wrong. " + ex.getMessage());
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ import static com.example.handlers.SearchHandler.SearchField.DUE_AT;
 import static com.example.handlers.SearchHandler.SearchField.EXTERNAL_ID;
 import static com.example.handlers.SearchHandler.SearchField.HAS_INCIDENTS;
 import static com.example.handlers.SearchHandler.SearchField.ID;
+import static com.example.handlers.SearchHandler.SearchField.NONE;
 import static com.example.handlers.SearchHandler.SearchField.ORGANIZATION_ID;
 import static com.example.handlers.SearchHandler.SearchField.PRIORITY;
 import static com.example.handlers.SearchHandler.SearchField.STATUS;
@@ -74,13 +75,14 @@ public class TicketSearchHandler extends SearchHandler {
                     throw new UnsupportedOperationException("Invalid search field supplied");
             }
         } else {
-            return this.getNextHandler().search(searchTO);
+            System.out.println("End of chain. No search handler found!");
+            return null;
         }
     }
 
     @Override
     public SearchField getSearchField(int searchField) {
         SearchField[] searchFields = new SearchField[]{ID, EXTERNAL_ID, CREATED_AT, URL, TAGS, HAS_INCIDENTS, SUBMITTER_ID, ASSIGNEE_ID, ORGANIZATION_ID, DUE_AT, TYPE, SUBJECT, DESCRIPTION, PRIORITY, STATUS, VIA};
-        return searchFields[searchField - 1];
+        return searchField > searchFields.length ? NONE : searchFields[searchField - 1];
     }
 }

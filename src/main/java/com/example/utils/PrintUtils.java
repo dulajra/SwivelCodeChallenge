@@ -90,6 +90,8 @@ public class PrintUtils {
 
                 System.out.print("\n");
             });
+        } else {
+            System.out.print("\nNo results found!\n");
         }
     }
 }

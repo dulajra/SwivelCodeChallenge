@@ -2,32 +2,24 @@ package com.example.utils;
 
 import com.example.models.SearchTO;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class InputUtils {
 
     private static final Scanner scanner = new Scanner(System.in);
 
-    public static int welcomeUser() {
-        System.out.print("\nWhat do you want to do?" +
-                "\n\t(1) Search" +
-                "\n\t(2) Help" +
-                "\n\t(3) Quit" +
-                "\n");
-        return scanner.nextInt();
-    }
-
     public static SearchTO startSearch() {
-        final int searchType, searchField;
-        final String searchKey;
+        final String searchType, searchKey;
+        int searchField;
 
         System.out.print("\nWhat do you want to search? (1) Organizations (2) Users (3) Tickets (0) Exit application: ");
 
-        switch (searchType = scanner.nextInt()) {
-            case 0:
-                System.out.print("\nGood Bye!\n");
-                System.exit(0);
-            case 1:
+        switch (searchType = scanner.next()) {
+            case "0":
+                System.out.print("\nExiting the application. Good Bye!\n");
+                return null;
+            case "1":
                 System.out.print("\nUsing what field do you want to search?" +
                         "\n\t(1) _id" +
                         "\n\t(2) external_id" +
@@ -40,7 +32,7 @@ public class InputUtils {
                         "\n\t(9) details" +
                         "\n");
                 break;
-            case 2:
+            case "2":
                 System.out.print("\nUsing what field do you want to search?" +
                         "\n\t(1) _id" +
                         "\n\t(2) external_id" +
@@ -63,7 +55,7 @@ public class InputUtils {
                         "\n\t(19) role" +
                         "\n");
                 break;
-            case 3:
+            case "3":
                 System.out.print("\nUsing what field do you want to search?" +
                         "\n\t(1) _id" +
                         "\n\t(2) external_id" +
@@ -82,15 +74,25 @@ public class InputUtils {
                         "\n\t(15) status" +
                         "\n\t(16) via" +
                         "\n");
+                break;
             default:
-                System.out.print("Invalid selection. Only 0, 1, 2 & 3 are valid inputs: ");
-                return null;
+                System.err.print("\nInvalid selection! Only 0, 1, 2 & 3 are valid inputs.\n");
+                return startSearch();
         }
 
-        searchField = scanner.nextInt();
+        do {
+            try {
+                searchField = scanner.nextInt();
+                break;
+            } catch (InputMismatchException ex) {
+                System.err.print("\nInvalid input! Only numbers are valid. Please reenter: ");
+                scanner.nextLine();
+            }
+        } while (true);
+
         System.out.print("\nEnter your search key: ");
         searchKey = scanner.next();
 
-        return new SearchTO(searchType, searchField, searchKey);
+        return new SearchTO(Integer.parseInt(searchType), searchField, searchKey);
     }
 }

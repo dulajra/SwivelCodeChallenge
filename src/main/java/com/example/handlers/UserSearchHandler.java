@@ -18,6 +18,7 @@ import static com.example.handlers.SearchHandler.SearchField.ID;
 import static com.example.handlers.SearchHandler.SearchField.LAST_LOGIN_AT;
 import static com.example.handlers.SearchHandler.SearchField.LOCALE;
 import static com.example.handlers.SearchHandler.SearchField.NAME;
+import static com.example.handlers.SearchHandler.SearchField.NONE;
 import static com.example.handlers.SearchHandler.SearchField.ORGANIZATION_ID;
 import static com.example.handlers.SearchHandler.SearchField.PHONE;
 import static com.example.handlers.SearchHandler.SearchField.ROLE;
@@ -90,6 +91,6 @@ public class UserSearchHandler extends SearchHandler {
     @Override
     public SearchField getSearchField(int searchField) {
         SearchField[] searchFields = new SearchField[]{ID, EXTERNAL_ID, CREATED_AT, URL, TAGS, ORGANIZATION_ID, LAST_LOGIN_AT, ACTIVE, VERIFIED, SHARED, SUSPENDED, NAME, ALIAS, LOCALE, TIMEZONE, EMAIL, PHONE, SIGNATURE, ROLE};
-        return searchFields[searchField - 1];
+        return searchField > searchFields.length ? NONE : searchFields[searchField - 1];
     }
 }
