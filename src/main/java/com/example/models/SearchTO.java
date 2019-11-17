@@ -2,6 +2,11 @@ package com.example.models;
 
 import lombok.Getter;
 
+/**
+ * Data transfer object to pass data from user input to search handlers.
+ *
+ * @author Dulaj Atapattu
+ */
 @Getter
 public class SearchTO {
     private final int searchType;

@@ -6,6 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * This can be used to load Java application properties from any valid properties file.
+ *
+ * @author Dulaj Atapattu
+ */
 public class PropertyLoader {
 
     public static Properties load(String propertyFileName) {

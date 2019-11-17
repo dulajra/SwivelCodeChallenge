@@ -20,6 +20,11 @@ import static com.example.handlers.SearchHandler.SearchField.SHARED_TICKETS;
 import static com.example.handlers.SearchHandler.SearchField.TAGS;
 import static com.example.handlers.SearchHandler.SearchField.URL;
 
+/**
+ * Search Handler for searching {@link Organization}s
+ *
+ * @author Dulaj Atapattu
+ */
 public class OrganizationSearchHandler extends SearchHandler {
 
     private final List<Organization> organizations;

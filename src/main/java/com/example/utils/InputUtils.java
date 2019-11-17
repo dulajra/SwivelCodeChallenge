@@ -5,6 +5,11 @@ import com.example.models.SearchTO;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Handles taking user inputs require for searching.
+ *
+ * @author Dulaj Atapattu
+ */
 public class InputUtils {
 
     private static final Scanner scanner = new Scanner(System.in);

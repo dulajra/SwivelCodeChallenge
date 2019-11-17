@@ -30,6 +30,11 @@ import static com.example.handlers.SearchHandler.SearchField.TIMEZONE;
 import static com.example.handlers.SearchHandler.SearchField.URL;
 import static com.example.handlers.SearchHandler.SearchField.VERIFIED;
 
+/**
+ * Search Handler for searching {@link User}s
+ *
+ * @author Dulaj Atapattu
+ */
 public class UserSearchHandler extends SearchHandler {
 
     private final List<User> users;

@@ -6,12 +6,16 @@ import lombok.Getter;
 
 import java.util.List;
 
+/**
+ * Abstract SearchHandler to be extended by any SearchHandler implementation in handlers chain.
+ *
+ * @author Dulaj Atapattu
+ */
 abstract public class SearchHandler {
     @Getter
     private SearchHandler nextHandler;
 
     abstract public List<BaseModel> search(SearchTO searchTO);
-
     abstract public SearchField getSearchField(int searchField);
 
     public final void setNextHandler(SearchHandler nextHandler) {

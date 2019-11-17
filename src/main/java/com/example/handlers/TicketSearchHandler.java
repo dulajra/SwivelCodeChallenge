@@ -27,6 +27,11 @@ import static com.example.handlers.SearchHandler.SearchField.TYPE;
 import static com.example.handlers.SearchHandler.SearchField.URL;
 import static com.example.handlers.SearchHandler.SearchField.VIA;
 
+/**
+ * Search Handler for searching {@link Ticket}s
+ *
+ * @author Dulaj Atapattu
+ */
 public class TicketSearchHandler extends SearchHandler {
 
     private final List<Ticket> tickets;

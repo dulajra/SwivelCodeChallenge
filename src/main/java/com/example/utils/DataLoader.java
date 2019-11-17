@@ -10,6 +10,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Loads all the data from provided JSON files.
+ */
 public class DataLoader {
     private static final ObjectMapper om = new ObjectMapper();
 

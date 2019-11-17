@@ -8,6 +8,11 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 
+/**
+ * Handles printing results in a human readable way.
+ *
+ * @author Dulaj Atapattu
+ */
 public class PrintUtils {
 
     public static void printResultsWithAssociations(List<BaseModel> listToPrint, List<Organization> allOrganizations, List<User> allUsers, List<Ticket> allTickets) {
