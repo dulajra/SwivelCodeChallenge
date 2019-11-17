@@ -76,7 +76,9 @@ public class TicketSearchHandler extends SearchHandler {
                 case DESCRIPTION:
                     return tickets.stream().filter(ticket -> StringUtils.containsIgnoreCase(ticket.getDescription(), searchTO.getSearchKey())).collect(Collectors.toList());
                 case TAGS:
-                    return tickets.stream().filter(ticket -> CollectionUtils.isNotEmpty(ticket.getTags().stream().filter(tag -> StringUtils.containsIgnoreCase(tag, searchTO.getSearchKey())).collect(Collectors.toList()))).collect(Collectors.toList());
+                    return tickets.stream().filter(ticket ->
+                            CollectionUtils.isNotEmpty(ticket.getTags()) &&
+                                    CollectionUtils.isNotEmpty(ticket.getTags().stream().filter(tag -> StringUtils.containsIgnoreCase(tag, searchTO.getSearchKey())).collect(Collectors.toList()))).collect(Collectors.toList());
                 default:
                     throw new UnsupportedOperationException("Invalid search field supplied");
             }

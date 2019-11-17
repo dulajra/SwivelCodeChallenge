@@ -85,7 +85,9 @@ public class UserSearchHandler extends SearchHandler {
                 case CREATED_AT:
                     return users.stream().filter(user -> StringUtils.equalsIgnoreCase(user.getCreatedAt(), searchTO.getSearchKey())).collect(Collectors.toList());
                 case TAGS:
-                    return users.stream().filter(user -> CollectionUtils.isNotEmpty(user.getTags().stream().filter(tag -> StringUtils.containsIgnoreCase(tag, searchTO.getSearchKey())).collect(Collectors.toList()))).collect(Collectors.toList());
+                    return users.stream().filter(user ->
+                            CollectionUtils.isNotEmpty(user.getTags())
+                                    && CollectionUtils.isNotEmpty(user.getTags().stream().filter(tag -> StringUtils.containsIgnoreCase(tag, searchTO.getSearchKey())).collect(Collectors.toList()))).collect(Collectors.toList());
                 default:
                     throw new UnsupportedOperationException("Invalid search field supplied");
             }
