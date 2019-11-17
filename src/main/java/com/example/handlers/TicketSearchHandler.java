@@ -80,7 +80,7 @@ public class TicketSearchHandler extends SearchHandler {
                     throw new UnsupportedOperationException("Invalid search field supplied");
             }
         } else {
-            System.out.println("End of chain. No search handler found!");
+            System.out.println("End of chain. No matching search handler found!");
             return null;
         }
     }
