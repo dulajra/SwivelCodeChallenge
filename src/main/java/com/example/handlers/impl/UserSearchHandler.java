@@ -81,7 +81,7 @@ public class UserSearchHandler extends SearchHandler {
                 case NAME:
                     return users.stream().filter(user -> StringUtils.containsIgnoreCase(user.getName(), searchTO.getSearchKey())).collect(Collectors.toList());
                 case ALIAS:
-                    return users.stream().filter(user -> StringUtils.containsIgnoreCase(user.getAlias(), searchTO.getSearchKey())).collect(Collectors.toList());
+                    return users.stream().filter(user -> StringUtils.equalsIgnoreCase(user.getAlias(), searchTO.getSearchKey())).collect(Collectors.toList());
                 case CREATED_AT:
                     return users.stream().filter(user -> StringUtils.equalsIgnoreCase(user.getCreatedAt(), searchTO.getSearchKey())).collect(Collectors.toList());
                 case TAGS:

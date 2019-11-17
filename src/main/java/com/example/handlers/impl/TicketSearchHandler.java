@@ -68,7 +68,7 @@ public class TicketSearchHandler extends SearchHandler {
                 case VIA:
                     return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(ticket.getVia(), searchTO.getSearchKey())).collect(Collectors.toList());
                 case SUBJECT:
-                    return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(ticket.getSubject(), searchTO.getSearchKey())).collect(Collectors.toList());
+                    return tickets.stream().filter(ticket -> StringUtils.containsIgnoreCase(ticket.getSubject(), searchTO.getSearchKey())).collect(Collectors.toList());
                 case URL:
                     return tickets.stream().filter(ticket -> StringUtils.equalsIgnoreCase(ticket.getUrl(), searchTO.getSearchKey())).collect(Collectors.toList());
                 case CREATED_AT:

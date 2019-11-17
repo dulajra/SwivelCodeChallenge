@@ -55,7 +55,7 @@ public class OrganizationSearchHandler extends SearchHandler {
                 case DOMAIN_NAMES:
                     return organizations.stream().filter(org ->
                             CollectionUtils.isNotEmpty(org.getDomainNames()) &&
-                                    CollectionUtils.isNotEmpty(org.getDomainNames().stream().filter(domain -> StringUtils.containsIgnoreCase(domain, searchTO.getSearchKey())).collect(Collectors.toList()))).collect(Collectors.toList());
+                                    CollectionUtils.isNotEmpty(org.getDomainNames().stream().filter(domain -> StringUtils.equalsIgnoreCase(domain, searchTO.getSearchKey())).collect(Collectors.toList()))).collect(Collectors.toList());
                 case TAGS:
                     return organizations.stream().filter(org ->
                             CollectionUtils.isNotEmpty(org.getTags()) &&
