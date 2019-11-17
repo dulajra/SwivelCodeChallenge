@@ -15,6 +15,11 @@ abstract public class SearchHandler {
     @Getter
     private SearchHandler nextHandler;
 
+    /**
+     * Perform the search according to the implementation using parameters given with @{@link SearchTO} object
+     * @param searchTO - Param object to be used for search
+     * @return - Matching results for the search
+     */
     abstract public List<BaseModel> search(SearchTO searchTO);
     abstract public SearchField getSearchField(int searchField);
 

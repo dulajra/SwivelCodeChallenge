@@ -19,12 +19,15 @@ import java.util.Properties;
 public class Main {
 
     public static void main(String[] args) {
+        // Load data file paths from application.properties file
         Properties properties = PropertyLoader.load("application.properties");
 
+        // Deserialize data using provided JSON files
         List<Organization> organizations = DataLoader.loadOrganizations(properties.getProperty("files.json.organizations"));
         List<User> users = DataLoader.loadUsers(properties.getProperty("files.json.users"));
         List<Ticket> tickets = DataLoader.loadTickets(properties.getProperty("files.json.tickets"));
 
+        // Initialize search handlers and build the search handlers chain.
         OrganizationSearchHandler osh = new OrganizationSearchHandler(organizations);
         UserSearchHandler ush = new UserSearchHandler(users);
         TicketSearchHandler tsh = new TicketSearchHandler(tickets);
@@ -34,6 +37,7 @@ public class Main {
 
         SearchTO searchTO;
 
+        // Start taking user inputs and search operations
         while ((searchTO = InputUtils.startSearch()) != null) {
             try {
                 List<BaseModel> search = osh.search(searchTO);
