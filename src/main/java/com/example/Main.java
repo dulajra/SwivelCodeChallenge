@@ -1,7 +1,10 @@
 package com.example;
 
+import com.example.handlers.OrganizationPrintHandler;
 import com.example.handlers.OrganizationSearchHandler;
+import com.example.handlers.TicketPrintHandler;
 import com.example.handlers.TicketSearchHandler;
+import com.example.handlers.UserPrintHandler;
 import com.example.handlers.UserSearchHandler;
 import com.example.models.BaseModel;
 import com.example.models.Organization;
@@ -10,7 +13,6 @@ import com.example.models.Ticket;
 import com.example.models.User;
 import com.example.utils.DataLoader;
 import com.example.utils.InputUtils;
-import com.example.utils.PrintUtils;
 import com.example.utils.PropertyLoader;
 
 import java.util.List;
@@ -35,13 +37,21 @@ public class Main {
         osh.setNextHandler(ush);
         ush.setNextHandler(tsh);
 
+        // Initialize print handlers and build the print handlers chain.
+        OrganizationPrintHandler oph = new OrganizationPrintHandler(users, tickets);
+        UserPrintHandler uph = new UserPrintHandler(organizations, tickets);
+        TicketPrintHandler tph = new TicketPrintHandler(users, organizations);
+
+        oph.setNextHandler(uph);
+        uph.setNextHandler(tph);
+
         SearchTO searchTO;
 
         // Start taking user inputs and search operations
         while ((searchTO = InputUtils.startSearch()) != null) {
             try {
                 List<BaseModel> search = osh.search(searchTO);
-                PrintUtils.printResultsWithAssociations(search, organizations, users, tickets);
+                oph.printResults(search);
             } catch (UnsupportedOperationException ex) {
                 System.err.println("Oops! Something went wrong. " + ex.getMessage());
             }

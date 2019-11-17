@@ -2,7 +2,6 @@ package com.example.handlers;
 
 import com.example.models.BaseModel;
 import com.example.models.SearchTO;
-import lombok.Getter;
 
 import java.util.List;
 
@@ -12,16 +11,22 @@ import java.util.List;
  * @author Dulaj Atapattu
  */
 abstract public class SearchHandler {
-    @Getter
+
     private SearchHandler nextHandler;
 
     /**
      * Perform the search according to the implementation using parameters given with @{@link SearchTO} object
+     *
      * @param searchTO - Param object to be used for search
      * @return - Matching results for the search
      */
     abstract public List<BaseModel> search(SearchTO searchTO);
+
     abstract public SearchField getSearchField(int searchField);
+
+    public final SearchHandler getNextHandler() {
+        return nextHandler;
+    }
 
     public final void setNextHandler(SearchHandler nextHandler) {
         this.nextHandler = nextHandler;
