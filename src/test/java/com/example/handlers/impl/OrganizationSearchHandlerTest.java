@@ -88,8 +88,4 @@ public class OrganizationSearchHandlerTest {
         }
 
     }
-
-    @Test
-    public void getSearchField() {
-    }
 }
