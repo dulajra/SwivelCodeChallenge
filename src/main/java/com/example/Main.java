@@ -1,11 +1,11 @@
 package com.example;
 
-import com.example.handlers.OrganizationPrintHandler;
-import com.example.handlers.OrganizationSearchHandler;
-import com.example.handlers.TicketPrintHandler;
-import com.example.handlers.TicketSearchHandler;
-import com.example.handlers.UserPrintHandler;
-import com.example.handlers.UserSearchHandler;
+import com.example.handlers.impl.OrganizationPrintHandler;
+import com.example.handlers.impl.OrganizationSearchHandler;
+import com.example.handlers.impl.TicketPrintHandler;
+import com.example.handlers.impl.TicketSearchHandler;
+import com.example.handlers.impl.UserPrintHandler;
+import com.example.handlers.impl.UserSearchHandler;
 import com.example.models.BaseModel;
 import com.example.models.Organization;
 import com.example.models.SearchTO;

@@ -1,5 +1,6 @@
-package com.example.handlers;
+package com.example.handlers.impl;
 
+import com.example.handlers.PrintHandler;
 import com.example.models.BaseModel;
 import com.example.models.Organization;
 import com.example.models.Ticket;
