@@ -37,7 +37,7 @@ public class Main {
         while ((searchTO = InputUtils.startSearch()) != null) {
             try {
                 List<BaseModel> search = osh.search(searchTO);
-                PrintUtils.printOrganizations(search, organizations, users, tickets);
+                PrintUtils.printResultsWithAssociations(search, organizations, users, tickets);
             } catch (UnsupportedOperationException ex) {
                 System.err.println("Oops! Something went wrong. " + ex.getMessage());
             }

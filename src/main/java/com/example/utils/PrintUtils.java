@@ -10,7 +10,7 @@ import java.util.List;
 
 public class PrintUtils {
 
-    public static void printOrganizations(List<BaseModel> listToPrint, List<Organization> allOrganizations, List<User> allUsers, List<Ticket> allTickets) {
+    public static void printResultsWithAssociations(List<BaseModel> listToPrint, List<Organization> allOrganizations, List<User> allUsers, List<Ticket> allTickets) {
         if (!CollectionUtils.isEmpty(listToPrint)) {
             listToPrint.forEach(item -> {
                 System.out.print("\n********************\n");
